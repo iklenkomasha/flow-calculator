@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Калькулятор потоку</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    background: white;
+    color: black;
+    padding: 25px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 350px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+button {
+    width: 90%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #667eea;
+    color: white;
+}
+
+.result {
+    margin-top: 20px;
+    text-align: left;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Калькулятор потоку 💸</h2>
+
+    <input type="number" id="flow" placeholder="Сума у потоці">
+    <input type="number" id="target" placeholder="Бажана сума у потоці">
+
+    <button id="calcBtn">Порахувати</button>
+    <button id="resetBtn">Очистити</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function reset() {
+    flow.value = "";
+    target.value = "";
+    result.innerHTML = "";
+}
+
+function calculate() {
+    let flowVal = parseFloat(flow.value);
+    let targetVal = parseFloat(target.value);
+
+    if (isNaN(flowVal) || isNaN(targetVal)) {
+        result.innerHTML = "Введи числа!";
+        return;
+    }
+
+    let bank = 0, days = 0, cycles = 0;
+
+    while (flowVal < targetVal) {
+        days++;
+        let daily = flowVal * 0.02;
+        flowVal -= daily;
+        bank += daily;
+
+        if (bank > 20) {
+            bank *= 1.5;
+            flowVal += bank;
+            bank = 0;
+            cycles++;
+        }
+
+        if (days > 100000) break;
+    }
+
+    result.innerHTML = `
+        Днів: ${days}<br>
+        Перевкладень: ${cycles}<br>
+        Потік: ${flowVal.toFixed(2)}
+    `;
+}
+
+calcBtn.onclick = calculate;
+resetBtn.onclick = reset;
+
+// 🔥 PWA реєстрація
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>
