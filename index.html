@@ -107,8 +107,8 @@ function calculate() {
     }
 
     result.innerHTML = `
-        Днів: ${days}<br>
-        Перевкладень: ${cycles}<br>
+        Потрібно днів: ${days}<br>
+        Потрібно перевкладень: ${cycles}<br>
         Потік: ${flowVal.toFixed(2)}
     `;
 }
@@ -116,7 +116,7 @@ function calculate() {
 calcBtn.onclick = calculate;
 resetBtn.onclick = reset;
 
-// 🔥 PWA реєстрація
+// PWA реєстрація
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js");
 }
